@@ -24,7 +24,7 @@ The template starts out very basic, but might receive additional features over t
     For a single-configuration generator (typically the case on Linux and macOS):
     ```
     cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-    cmake --build build
+     
     ```
 
     For a multi-configuration generator (typically the case on Windows):

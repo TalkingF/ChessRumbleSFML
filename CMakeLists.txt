@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(CMakeSFMLProject LANGUAGES CXX)
+project(ChessRumbleSFML CXX)
 
 include(FetchContent)
 FetchContent_Declare(SFML

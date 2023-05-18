@@ -22,3 +22,11 @@ void Piece::set_position(int new_row, int new_col) {
     row = new_row;
     col = new_col;
 }
+
+bool Piece::legal_move(int new_row, int new_col){
+    // Check if the new position is within the bounds of the chessboard
+    if (new_row < 0 || new_row >= 8 || new_col < 0 || new_col >= 8) {
+        return false; // The move is out of bounds
+    }
+    return true; // The move is valid
+}

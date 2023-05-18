@@ -8,6 +8,10 @@ bool Bishop::legal_move(int new_row, int new_col) {
         return false;
     }
 
+    Board board;
+    const vector<vector<Square>>& boardData = board.get_board();
+    const Square& currentSquare = boardData[row][col];
+
     int row_diff = new_row - get_row();
     int col_diff = new_col - get_col();
     if (abs(row_diff) != abs(col_diff)) {
@@ -20,7 +24,6 @@ bool Bishop::legal_move(int new_row, int new_col) {
     int col = get_col() + col_step;
 
     while (row != new_row && col != new_col) {
-        Square& currentSquare = Board::get_board().getSquare(row, col);
         if (currentSquare.getPiece() != nullptr) {
             return false;
         }

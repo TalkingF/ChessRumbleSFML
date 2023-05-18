@@ -1,6 +1,16 @@
 #include <iostream>
 #include <vector>
 #include "Game.h"
+#include "Square.h"
+#include "Pawn.h"
+#include "Queen.h"
+#include "Bishop.h"
+#include "Knight.h"
+#include "Rook.h"
+#include "King.h"
+#include "Game.h"
+#include "Board.h"
+#include "Piece.h"
 using namespace std;
 
 Game::Game() {}

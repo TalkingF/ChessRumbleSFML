@@ -1,34 +1,32 @@
 #include <iostream>
 #include <vector>
 #include "Square.h"
-#include "Square.h"
 #include "Pawn.h"
 #include "Queen.h"
 #include "Bishop.h"
 #include "Knight.h"
 #include "Rook.h"
 #include "King.h"
+#include "Board.h"
 
 using namespace std;
 
-class Board {
-private:
-    static const int SIZE = 8;
-    vector<vector<Square>> squares;
+    Board::Board() : squares(SIZE, vector<Square>(SIZE)) {}
 
-public:
-    Board() : squares(SIZE, vector<Square>(SIZE)) {}
-
-    void initialize() {
+    void Board::initialize() {
         // Clears the board completely.
         for (int i = 0; i < SIZE; ++i) {
             for (int j = 0; j < SIZE; ++j) {
                 squares[i][j].clear();
             }
+        }
+
 
         // Set up initial pieces
+        for (int i = 0; i<8; i++){
         squares[1][i].setPiece(new Pawn(false, 1, i));  // Black Pawns
         squares[6][i].setPiece(new Pawn(true, 6, i));  // White Pawns
+        }
 
         squares[0][3].setPiece(new Queen(false, 0, 3));  // Black Queen
         squares[7][3].setPiece(new Queen(true, 7, 3));  // White Queen
@@ -51,23 +49,26 @@ public:
         squares[0][4].setPiece(new King(false, 0, 4));  // Black King
         squares[7][4].setPiece(new King(true, 7, 4));  // White King
         }
-    }
-    void print() const {
-        cout << "   a b c d e f g h" << endl;
-        for (int i = 0; i < SIZE; ++i) {
-            cout << i + 1 << " ";
-            for (int j = 0; j < SIZE; ++j) {
-                cout << squares[i][j].getPiece() << " ";
+void Board::print() const {
+    cout << "  a b c d e f g h" << endl;
+    for (int i = 0; i < SIZE; ++i) {
+        cout << i + 1 << " ";
+        for (int j = 0; j < SIZE; ++j) {
+            Piece* piece = squares[i][j].getPiece();
+            if (piece == nullptr) {
+                cout << "0 ";
+            } else {
+                cout << piece->get_specific_piece() << " ";
             }
-            cout << endl;
         }
+        cout << endl;
     }
+}
 
-    Square& getSquare(int row, int col) {
+    Square& Board::getSquare(int row, int col) {
         return squares[row][col];
 
     }
-const vector<vector<Square>>& get_board() const {
+    const vector<vector<Square>>& Board::get_board() const {
     return squares;
 }
-};

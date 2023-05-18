@@ -1,21 +1,27 @@
-#include "Game.h"
+#include <iostream>
+#include <string>
 #include "Board.h"
+#include "Piece.h"
+#include "Square.h"
 
 int main() {
     Board board;
     board.initialize();
     board.print();
 
+    std::string input;
+
     // Game loop
     bool isWhiteTurn = true;
     while (true) {
         // Determine the player's turn
         char playerColour = isWhiteTurn ? 'W' : 'B';
-        cout << "Player " << playerColour << "'s turn. Enter move (e.g., a2 a4): ";
+        std::cout << "Player " << playerColour << "'s turn. Enter move (e.g., a2 a4): ";
 
         // Read the move input from the player
-        string startSquare, endSquare;
-        cin >> startSquare >> endSquare;
+        std::string startSquare, endSquare;
+        std::cin >> startSquare >> endSquare;
+
 
         // Convert the input to row and column indices
         int startRow = startSquare[1] - '1';
@@ -28,15 +34,18 @@ int main() {
         Square& endSquareObj = board.getSquare(endRow, endCol);
 
         // Check if the start square has a piece of the player's colour
+        // Check if the start square has a piece of the player's color
         Piece* startPiece = startSquareObj.getPiece();
-        if (startPiece == nullptr || startPiece->getColour() != playerColour) {
-            cout << "Invalid move. Try again." << endl;
-            continue;
+             if (startPiece == nullptr || (startPiece->getColour() == 'W' && playerColour != 'W') ||
+                   (startPiece->getColour() == 'B' && playerColour != 'B')) {
+                    std::cout << "Invalid move. Try again." << std::endl;
+                    continue;
         }
+
 
         // Check if the move is legal for the selected piece
         if (!startPiece->legal_move(endRow, endCol)) {
-            cout << "Illegal move. Try again." << endl;
+            std::cout << "Illegal move. Try again." << std::endl;
             continue;
         }
 
@@ -45,7 +54,7 @@ int main() {
         startSquareObj.clear();
 
         // Print the updated board state
-        cout << "Next turn:" << endl;
+        std::cout << "Next turn:" << std::endl;
         board.print();
 
         // Switch turns

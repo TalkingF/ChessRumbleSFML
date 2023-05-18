@@ -2,6 +2,7 @@
 #include "Board.h"
 using namespace std;
 
+Knight::Knight(bool colour_, int row_, int col_) : Piece(colour_, row_, col_) {}
 
 bool Knight::legal_move(int new_row, int new_col) {
     if (!Piece::legal_move(new_row, new_col)) {

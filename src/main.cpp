@@ -1,21 +1,34 @@
+//SFML inclusion
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 
-int main()
-{
-    auto window = sf::RenderWindow{ { 1920u, 1080u }, "CMake SFML Project" };
-    window.setFramerateLimit(144);
+#include "Game.h"
+#include "Menu.h"
 
-    while (window.isOpen())
-    {
-        for (auto event = sf::Event{}; window.pollEvent(event);)
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-        }
+/*
+Controls game loop & sfml back-end. Is mainly responsible for updating & rendering
+what is sent to it. 
+*/
 
-        window.clear();
-        window.display();
+int main() {
+    
+    //On startup
+    Game g;
+    sf::RenderWindow* SFMLWindow = new sf::RenderWindow(sf::VideoMode(g.getWindowWidth(),g.getWindowHeight()), "Chess Rumble", sf::Style::Titlebar | sf::Style::Close);
+    SFMLWindow->setFramerateLimit(60);
+    Menu menuScene;
+    //checks font
+    if (!menuScene.getFont().loadFromFile("/home/jacksonb/ChessRumbleSFML/ChessRumbleSFML/src/Fonts/NotoSansMath-Regular.ttf")) {
+        std::cout << "Font failed to load";
+        return 0;  
     }
+    while (SFMLWindow->isOpen()) {
+        //conditional until confirmation
+        menuScene.update(SFMLWindow);
+        menuScene.render(SFMLWindow);
+    }
+    return 0;
 }

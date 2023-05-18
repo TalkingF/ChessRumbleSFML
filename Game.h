@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <iostram>
+#include <iostream>
 #include <vector>
 #include "Board.h"
 using namespace std;

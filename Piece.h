@@ -9,7 +9,7 @@ protected:
 public:
     Piece(bool colour_, int row_, int col_);
 
-    bool what_colour(); //getter for colour.
+    bool getColour(); //getter for colour.
 
     int get_row(); //getter for row.
 

@@ -1,16 +1,9 @@
-#include <iostream>
-#include <vector>
 #include "Game.h"
-using namespace std;
+#include "Board.h"
 
-Game::Game() {}
-
-void Game::play() {
-    // Initialize the board
+int main() {
+    Board board;
     board.initialize();
-
-    // Print the initial board state
-    cout << "Initial Board State:" << endl;
     board.print();
 
     // Game loop
@@ -55,10 +48,9 @@ void Game::play() {
         cout << "Next turn:" << endl;
         board.print();
 
-        // Check for game over conditions or other rules
-        // ... (need to include checkmate conditons at the very least. Not sure if this can be done in king class.)
-
         // Switch turns
         isWhiteTurn = !isWhiteTurn;
     }
+
+    return 0;
 }

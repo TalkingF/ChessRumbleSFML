@@ -1,10 +1,7 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 
-#include <iostram>
-#include <vector>
 #include "Piece.h"
-using namespace std;
 
 class Square {
 private:

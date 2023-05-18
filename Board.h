@@ -1,11 +1,10 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <iostram>
+#include <iostream>
 #include <vector>
 #include "Square.h"
 using namespace std;
-
 
 class Board {
 private:
@@ -20,6 +19,8 @@ public:
     void print() const;
 
     Square& getSquare(int row, int col);
+
+    const vector<vector<Square>>& get_board() const;
 };
 
 #endif

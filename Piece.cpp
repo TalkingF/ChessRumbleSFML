@@ -1,12 +1,12 @@
 #include "Piece.h"
 
-Piece::Piece(bool is_white_, int row_, int col_) {
+Piece::Piece(bool colour_, int row_, int col_) {
     colour = colour_;
     row = row_;
     col = col_;
 }
 
-bool Piece::what_colour() {
+bool Piece::getColour() {
     return colour;
 }
 

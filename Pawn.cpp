@@ -1,6 +1,7 @@
 #include "Pawn.h"
+#include "Board.h"
 
-Pawn::Pawn(bool colour_, int row_, int col_) ; Piece (colour_, row_, col_) {}
+Pawn::Pawn(bool colour_, int row_, int col_) : Piece(colour_, row_, col_) {}
 
 bool Pawn::legal_move(int new_row, int new_col) {
     int move_direction = (colour) ? -1 : 1;
@@ -8,7 +9,7 @@ bool Pawn::legal_move(int new_row, int new_col) {
         // Move one space forward.
         return true;
     }
-    if (new_col == col && new_row == row + 2*move_direction && row == (is_white ? 6 : 1)) {
+    if (new_col == col && new_row == row + 2*move_direction && row == (colour ? 6 : 1)) {
         // Move two spaces forward from starting position
         return true;
     }

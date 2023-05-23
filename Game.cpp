@@ -13,8 +13,8 @@
 #include "Piece.h"
 using namespace std;
 
-Game::Game() {}
-
+Game::Game(){
+}
 void Game::play() {
     // Initialize the board
     board.initialize();
@@ -27,8 +27,8 @@ void Game::play() {
     bool isWhiteTurn = true;
     while (true) {
         // Determine the player's turn
-        char playerColour = isWhiteTurn ? 'W' : 'B';
-        cout << "Player " << playerColour << "'s turn. Enter move (e.g., a2 a4): ";
+        int player_colour = isWhiteTurn ? 1 : 0;
+        cout << "Player " << player_colour << "'s turn. Enter move (e.g., a2 a4): ";
 
         // Read the move input from the player
         string startSquare, endSquare;
@@ -41,24 +41,31 @@ void Game::play() {
         int endCol = endSquare[0] - 'a';
 
         // Get the start and end squares
-        Square& startSquareObj = board.getSquare(startRow, startCol);
-        Square& endSquareObj = board.getSquare(endRow, endCol);
+        Square& startSquareObj = board.get_square(startRow, startCol);
+        Square& endSquareObj = board.get_square(endRow, endCol);
 
-        // Check if the start square has a piece of the player's colour
-        Piece* startPiece = startSquareObj.getPiece();
-        if (startPiece == nullptr || startPiece->getColour() != playerColour) {
+        // Check if the start square is empty or contains a piece of the opposite color
+        Piece* startPiece = startSquareObj.get_piece();
+        if (startPiece == nullptr || startPiece->get_colour() != player_colour) {
             cout << "Invalid move. Try again." << endl;
             continue;
         }
 
         // Check if the move is legal for the selected piece
-        if (!startPiece->legal_move(endRow, endCol)) {
+        if (!startPiece->legal_move(endRow, endCol, board)) {
             cout << "Illegal move. Try again." << endl;
             continue;
         }
 
+        // Check if the move puts the player's own king in check
+        if (board.isCheck(isWhiteTurn)) {
+            cout << "Illegal move. It puts your own king in check. Try again." << endl;
+            continue;
+        }
+
         // Move the piece to the destination square
-        endSquareObj.setPiece(startPiece);
+        endSquareObj.set_piece(startPiece);
+        startPiece->set_position(endRow, endCol);
         startSquareObj.clear();
 
         // Print the updated board state
@@ -66,7 +73,7 @@ void Game::play() {
         board.print();
 
         // Check for game over conditions or other rules
-        // ... (need to include checkmate conditons at the very least. Not sure if this can be done in king class.)
+        // ...
 
         // Switch turns
         isWhiteTurn = !isWhiteTurn;

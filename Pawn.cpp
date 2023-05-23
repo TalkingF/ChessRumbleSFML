@@ -1,44 +1,36 @@
 #include "Pawn.h"
-#include "Board.h"
 
 Pawn::Pawn(bool colour_, int row_, int col_) : Piece(colour_, row_, col_) {}
 
-bool Pawn::legal_move(int new_row, int new_col) {
-    int move_direction = (colour) ? -1 : 1;
-
-    Board board;
-    const vector<vector<Square>>& boardData = board.get_board();
-    const Square& currentSquare = boardData[row][col];
-
-    // Check if the target square is within the board bounds
-    if (!Piece::legal_move(new_row, new_col)) {
+bool Pawn::legal_move(int new_row, int new_col, const Board& board) {
+    // Check if the destination square is occupied by a piece of the same color
+    if (board.get_square(new_row, new_col).get_piece() != nullptr &&
+        board.get_square(new_row, new_col).get_piece()->get_colour() == colour) {
         return false;
     }
 
-    // Check if the target square is occupied by another piece
-    if (boardData[new_row][new_col].getPiece() != nullptr) {
-        return false;
-    }
+    // Determine the direction the pawn can move based on its color
+    int direction = (colour) ? -1 : 1;
 
-    // Check for capturing an opponent's piece diagonally
-    if (new_col == col + 1 || new_col == col - 1) {
-        if (new_row == row + move_direction) {
-            if (boardData[new_row][new_col].getPiece() != nullptr) {
-                // Valid capturing move
-                return true;
-            }
+    // Check if the pawn is moving forward
+    if (new_col == col && new_row == row + direction) {
+        // Check if the destination square is unoccupied
+        return (board.get_square(new_row, new_col).get_piece() == nullptr);
+    }
+    // Check if the pawn is moving forward by two squares from its starting position
+    else if (new_col == col && new_row == row + 2 * direction) {
+        // Check if the pawn is on its starting row
+        if ((colour && row == 6) || (!colour && row == 1)) {
+            // Check if the squares in between are unoccupied
+            return (board.get_square(row + direction, new_col).get_piece() == nullptr &&
+                    board.get_square(new_row, new_col).get_piece() == nullptr);
         }
-        // TODO: Implement en passant check
     }
-
-    // Check for moving one space forward
-    if (new_col == col && new_row == row + move_direction) {
-        return true;
-    }
-
-    // Check for moving two spaces forward from the starting position
-    if (new_col == col && new_row == row + 2 * move_direction && row == (colour ? 6 : 1)) {
-        return true;
+    // Check if the pawn is capturing an opponent's piece
+    else if (abs(new_col - col) == 1 && new_row == row + direction) {
+        // Check if the destination square is occupied by an opponent's piece
+        return (board.get_square(new_row, new_col).get_piece() != nullptr &&
+                board.get_square(new_row, new_col).get_piece()->get_colour() != colour);
     }
 
     return false;

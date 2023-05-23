@@ -1,8 +1,8 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 
-#include "Piece.h"
 
+class Piece;
 class Square {
 private:
     Piece* piece;
@@ -10,9 +10,9 @@ private:
 public:
     Square();
 
-    void setPiece(Piece* p);
+    void set_piece(Piece* p);
 
-    Piece* getPiece() const;
+    Piece* get_piece() const;
 
     void clear();
 };

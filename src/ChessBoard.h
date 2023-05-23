@@ -8,14 +8,28 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-#include "Game.h"
+#include <iostream>
+#include <vector>
 #include "Square.h"
+#include "Pawn.h"
+#include "Queen.h"
+#include "Bishop.h"
+#include "Knight.h"
+#include "Rook.h"
+#include "King.h"
+#include "ChessBoard.h"
+#include "Game.h"
+#include "Menu.h"
 
-class ChessBoard: public Game  {
+class ChessBoard: public Game, public sf::Drawable, public sf::Transformable  {
     protected:
-    Square ChessArray[8][8];
     sf::Texture boardTexture;
-    sf::VertexArray boardVerticies
+    sf::Sprite boardSprite;
+    sf::VertexArray chessVertexArray;
+    sf::Texture chessTileset;
+    static const int SIZE = 8;
+    std::vector<std::vector<Square>> squares;
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     
     
     public:
@@ -28,16 +42,20 @@ class ChessBoard: public Game  {
     void render(sf::RenderWindow* SFMLWindow);
     void determineEvent(sf::Event gameEvent, sf::RenderWindow* SFMLWindow);
 
+    //update
+    void initializeBoard(Menu menuScene);
+    void InitializePieces();
 
-    sf::Event getplayerInput(sf::Event gameEvent); //parse through determine events
-    Square findSquare(sf::Event::mouseButton xPos, sf::Event::mouseButton yPos);
+    //render
+    void loadBoard();
+    bool loadPieces();
 
-    //tilemap for visual pipeline. Drawing chess pieces last will cause them to render over squares.
-    void makeBoard(/*Option-1*/ /*Option 2*/); //used on initialisaation of chessBoard.
-
-
+    //functions
+    Square& getSquare(int xPos, int yPos); //to be used by mouse
+    const std::vector<std::vector<Square>>& get_board() const;
     
-
+    //getters + setters
+    sf::Sprite getBoardSprite();
 
     
 };

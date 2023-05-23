@@ -14,8 +14,8 @@
 
 class Game {
     protected:
-    int windowWidth = 1920;
-    int windowHeight = 1080;
+    int windowWidth = 1024;
+    int windowHeight = 1024;
     sf::Event gameEvent;
     std::string scene;
     

@@ -34,6 +34,7 @@ class Menu: public Game {
     void downMenu();
     void enterMenu();
     void highlightCategory(int previousPos);
+    void loadMenu();
 
     //getters + setters
     sf::Text getCatgeory(int categoryIndex);

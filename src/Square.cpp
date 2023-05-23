@@ -1,16 +1,15 @@
-#include "Squares.h"
+#include "Square.h"
 
+Square::Square() : piece(nullptr) {}
 
-//SFML inclusion
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-
-Squares() {
-
+void Square::setPiece(Piece* p) {
+    piece = p;
 }
-~Squares() {
 
+Piece* Square::getPiece() const {
+    return piece;
+}
+
+void Square::clear() {
+    piece = nullptr;
 }

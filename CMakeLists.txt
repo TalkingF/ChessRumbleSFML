@@ -7,7 +7,9 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(CMakeSFMLProject src/main.cpp)
+add_executable(CMakeSFMLProject src/main.cpp src/Game.cpp src/Menu.cpp 
+src/ChessBoard.cpp src/Square.cpp src/Piece.cpp src/Pawn.cpp src/King.cpp src/Queen.cpp 
+src/Knight.cpp src/Rook.cpp src/Bishop.cpp)
 target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics)
 target_compile_features(CMakeSFMLProject PRIVATE cxx_std_17)
 if (WIN32 AND BUILD_SHARED_LIBS)

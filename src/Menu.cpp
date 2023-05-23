@@ -19,31 +19,31 @@ Menu::Menu() {
     category[0].setString("Chess Rumble");
     category[0].Bold;
     category[0].setCharacterSize(40); //default is 30???
-    category[0].setPosition(sf::Vector2f(1920 / 2, 1080 / 6 * 1));
+    category[0].setPosition(sf::Vector2f(1024 / 2, 1024 / 6 * 1));
 
     //PLAY->loads menu with current settings
     category[1].setFont(font);
     category[1].sf::Text::setFillColor(sf::Color::White);
     category[1].setString("Play");
-    category[1].setPosition(sf::Vector2f(1920 / 2, 1080 / 6 * 2));
+    category[1].setPosition(sf::Vector2f(1024 / 2, 1024 / 6 * 2));
 
     //OPTION_1->bool modifier
     category[2].setFont(font);
     category[2].sf::Text::setFillColor(sf::Color::White);
     category[2].setString("Option 1");
-    category[2].setPosition(sf::Vector2f(1920 / 2, 1080 / 6 * 3));
+    category[2].setPosition(sf::Vector2f(1024 / 2, 1024 / 6 * 3));
 
     //OPTION_2->bool modifier
     category[3].setFont(font);
     category[3].sf::Text::setFillColor(sf::Color::White);
     category[3].setString("Option 2");
-    category[3].setPosition(sf::Vector2f(1920 / 2, 1080 / 6 * 4));
+    category[3].setPosition(sf::Vector2f(1024 / 2, 1024 / 6 * 4));
 
     //Exit->closes game
     category[4].setFont(font);
     category[4].sf::Text::setFillColor(sf::Color::White);
     category[4].setString("Exit");
-    category[4].setPosition(sf::Vector2f(1920 / 2, 1080 / 6 * 5));
+    category[4].setPosition(sf::Vector2f(1024 / 2, 1024 / 6 * 5));
 }
 Menu::~Menu() {
 
@@ -95,6 +95,13 @@ void Menu::highlightCategory(int previousPos) {
     this->category[this->categoryPos - 1].sf::Text::setFillColor(sf::Color::Blue);
 }
 
+void Menu::loadMenu() {
+       
+    if (!this->getFont().loadFromFile("/home/jacksonb/ChessRumbleSFML/ChessRumbleSFML/src/Assets/Fonts/OpenSans-B9K8.ttf")) {
+        std::cout << "Font failed to load";         
+    }
+}
+ 
 //getters + setters    
 sf::Text Menu::getCatgeory(int categoryIndex) {
     return this->category[categoryIndex];
@@ -152,11 +159,12 @@ void Menu::update(sf::RenderWindow *SFMLWindow) {
 }
 
 void Menu::render(sf::RenderWindow *SFMLWindow) {
-    SFMLWindow->clear();
+    SFMLWindow->clear(sf::Color::Red);
     for (int i = 0; i < 5; i ++) {
         SFMLWindow->draw(this->category[i]);
-        std::cout << "rendering " << i;
     }
+    SFMLWindow->display();
+    
    
 }
     

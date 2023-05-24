@@ -1,6 +1,8 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+class ChessBoard;
+
 class Piece {
 protected:
     bool colour; //black or white.
@@ -9,7 +11,7 @@ protected:
 public:
     Piece(bool colour_, int row_, int col_);
 
-    bool getColour(); //getter for colour.
+    bool get_Colour(); //getter for colour.
 
     int get_row(); //getter for row.
 
@@ -17,7 +19,7 @@ public:
 
     void set_position(int new_row, int new_col);
 
-    virtual bool legal_move(int new_row, int new_col) = 0; //checks if the move the piece is making is legal.
+    virtual bool legal_move(int new_row, int new_col, ChessBoard& board) = 0; //checks if the move the piece is making is legal.
 
     virtual char get_specific_piece() = 0;
 

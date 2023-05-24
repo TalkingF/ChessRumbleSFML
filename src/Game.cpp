@@ -1,5 +1,9 @@
 #include "Game.h"
 #include "Menu.h"
+#include "ChessBoard.h"
+#include "Piece.h"
+#include "Square.h"
+
 //SFML inclusion
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
@@ -9,6 +13,8 @@
 
 #include <iostream>
 #include <string>
+#include <chrono>
+#include <thread>
 
 //constructors + destructors
 Game::Game() {
@@ -17,18 +23,10 @@ Game::Game() {
 Game::~Game() { 
 
 }
-    
 //getters + setters 
 
 sf::Event Game::getGameEvent() {
     return this->gameEvent;
-}
-
-std::string Game::getScene() {
-    return this->scene;
-}
-void Game::setScene(std::string scene) {
-    this->scene = scene;    
 }
 
 int Game::getWindowHeight() {
@@ -39,42 +37,110 @@ int Game::getWindowWidth() {
     return this->windowWidth;
 }
 
-//event polling and determing events. Returns event type. 
-void Game::determineEvent(sf::Event gameEvent, sf::RenderWindow* SFMLWindow) {
-    switch (gameEvent.type)
-    {
-    case sf::Event::Closed: //close window through taskbar
-        SFMLWindow->close();
-        break;
-    case sf::Event::KeyPressed: //close window through backspace
-        if (this->gameEvent.key.code == sf::Keyboard::Backspace) {
-            SFMLWindow->close();
-        }
-        break;
-    case sf::Event::MouseButtonPressed: //left click event
-        if (this->gameEvent.mouseButton.button == sf::Mouse::Button::Left) {
-            this->gameEvent.mouseButton.x;
-        }
-        break;
-    default:
-        break;
-    }
-
-}
-//update handles and game logic or events that need to be checked.
-void Game::update(sf::RenderWindow *SFMLWindow) {
-//event polling
-    while (SFMLWindow->pollEvent(this->gameEvent)) {
-        determineEvent(this->gameEvent, SFMLWindow);
-    }
+void Game::play() {
     
-}
+    
+    Menu *menu = new Menu; //creates menu and displays menu scene
+    
+ 
+    while (menu->getConfirm() == false) {
+        char input; 
+        std::cin >> input;
+        menu->determineInput(input);
+    }
 
-/*render handles sfml drawing and is to be called after update is finished as it
-as it references the changes to update on what to render.*/
-void Game::render(sf::RenderWindow *SFMLWindow) {
-    SFMLWindow->clear();
-    SFMLWindow->display();
-}
+    sf::RenderWindow* SFMLWindow = new sf::RenderWindow(sf::VideoMode(this->windowWidth,this->windowHeight), "Chess Rumble", sf::Style::Titlebar | sf::Style::Close);
+    SFMLWindow->setFramerateLimit(60); //sets framerate to desired constant
+    
+    // Initialize the board
+    ChessBoard *board = new ChessBoard; //creates chess board
+    
+    board->initializeBoard(*menu); //parses any menu vars to chessboard
+
+    delete menu; 
+    board->loadBoard(); //loads board image
+
+    board->InitializePieces(); //initialise piece locations on startup
+
+
+    bool isWhiteTurn = true;
+    //Chess Board loop,will continue until something tries to close the window
+    while (!this->gameEvent.type == sf::Event::Closed) {
+        if (!board->loadPieces()) { //checks to make sure tileset can load
+        std::cout << "Initialising pieces failed";
+        }
+        board->update(SFMLWindow);
+        board->render(SFMLWindow, *board);
+            // Determine the player's turn
+            bool playerColour = isWhiteTurn ? 1 : 0;
+
+            if (board->getEndMousePos(0) != -1) {
+                board->resetMousePosSelection();   
+            }
+    
+            //converts mouse clicks to row/cols and expose
+            while (board->getEndMousePos(0) == -1) {
+                board->update(SFMLWindow);
+                std::this_thread::sleep_for(std::chrono::milliseconds(200));   
+            }
+        
+            
+            
+            Square& startSquareObj = board->get_square(board->getStartMousePos(0), board->getStartMousePos(1));
+            Square& endSquareObj = board->get_square(board->getEndMousePos(0), board->getEndMousePos(1));
+
+            // Check if the start square has a piece of the player's colour
+            Piece* startPiece = startSquareObj.get_piece();
+            Piece* endPiece = endSquareObj.get_piece();
+            if (startPiece == nullptr || startPiece->get_Colour() != playerColour) {
+                continue;
+            }
+
+            // Check if the move is legal for the selected piece
+            if (!startPiece->legal_move(board->getEndMousePos(0), board->getEndMousePos(1), *board)) {
+                continue;
+            }
+
+            //checks friendly fire
+            if (endPiece == nullptr) {
+            }
+            else  {
+                if (startPiece->get_Colour() == endPiece->get_Colour()) {
+                    continue;
+                }
+            }
+         
+            
+
+
+
+            // Move the piece to the destination square
+            endSquareObj.set_piece(startPiece);
+            startPiece->set_position(board->getEndMousePos(0), board->getEndMousePos(1));
+            startSquareObj.clear();
+            
+            
+            
+
+            // Print the updated board state
+
+
+            // Check for game over conditions or other rules
+            // ... (need to include checkmate conditons at the very least. Not sure if this can be done in king class.)
+
+            // Switch turns
+            isWhiteTurn = !isWhiteTurn;
+    }    
+} 
+
+
+
+    
+
+
+
+
+
+
 
 

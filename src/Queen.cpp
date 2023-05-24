@@ -1,15 +1,17 @@
 #include "Queen.h"
 #include "ChessBoard.h"
+#include "Square.h"
 
 
 Queen::Queen(bool colour_, int row_, int col_) : Piece(colour_, row_, col_) {}
 
-bool Queen::legal_move(int new_row, int new_col) {
+bool Queen::legal_move(int new_row, int new_col, ChessBoard& board) {
+
 
 int row_diff = new_row - row;
 int col_diff = new_col - col;
 
-    ChessBoard board;
+    
     const std::vector<std::vector<Square>>& boardData = board.get_board();
     const Square& currentSquare = boardData[row][col];
 
@@ -19,15 +21,16 @@ if (row_diff == 0 && col_diff != 0) {
     // Check for obstacles horizontally
     int step = col_diff > 0 ? 1 : -1;
     for (int c = col + step; c != new_col; c += step) {
-        if (boardData[row][c].getPiece() != nullptr) {
+        if (boardData[row][c].get_piece() != nullptr) {
             return false;
         }
+        
     }
 } else if (row_diff != 0 && col_diff == 0) {
     // Check for obstacles vertically
     int step = row_diff > 0 ? 1 : -1;
     for (int r = row + step; r != new_row; r += step) {
-        if (boardData[r][col].getPiece() != nullptr) {
+        if (boardData[r][col].get_piece() != nullptr) {
             return false;
         }
     }
@@ -38,7 +41,7 @@ if (row_diff == 0 && col_diff != 0) {
     int r = row + row_step;
     int c = col + col_step;
     while (r != new_row && c != new_col) {
-        if (boardData[r][c].getPiece() != nullptr) {
+        if (boardData[r][c].get_piece() != nullptr) {
             return false;
         }
         r += row_step;

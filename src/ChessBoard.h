@@ -27,19 +27,23 @@ class ChessBoard: public Game, public sf::Drawable, public sf::Transformable  {
     sf::Sprite boardSprite;
     sf::VertexArray chessVertexArray;
     sf::Texture chessTileset;
-    static const int SIZE = 8;
     std::vector<std::vector<Square>> squares;
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+    int startMousePos[2] = {-1, -1};
+    int endMousePos[2] = {-1, -1};
+    bool bomberPawns;
+    bool loadState;
     
     
     public:
+    static const int SIZE = 8;
     //constructors + destructors
     ChessBoard();
     ~ChessBoard();
 
     //game pipeline
     void update(sf::RenderWindow* SFMLWindow);
-    void render(sf::RenderWindow* SFMLWindow);
+    void render(sf::RenderWindow* SFMLWindow, ChessBoard board);
     void determineEvent(sf::Event gameEvent, sf::RenderWindow* SFMLWindow);
 
     //update
@@ -51,11 +55,20 @@ class ChessBoard: public Game, public sf::Drawable, public sf::Transformable  {
     bool loadPieces();
 
     //functions
-    Square& getSquare(int xPos, int yPos); //to be used by mouse
-    const std::vector<std::vector<Square>>& get_board() const;
+    Square& get_square(int xPos, int yPos); //to be used by mouse
+    std::vector<std::vector<Square>>& get_board();
+    void remove_piece(int row, int col);
+    bool isCheck(bool isWhiteTurn);
+    void saveBoard();
+    void loadSavedBoard();
     
     //getters + setters
     sf::Sprite getBoardSprite();
+    int getStartMousePos(int index);
+    int getEndMousePos(int index);
+    void resetMousePosSelection();
+    int get_size() const; // Public getter for SIZE
+    
 
     
 };

@@ -17,27 +17,23 @@ class Game {
     int windowWidth = 1024;
     int windowHeight = 1024;
     sf::Event gameEvent;
-    std::string scene;
+   
     
     public:
     //constructors and destructors
     Game();
     ~Game();
         
-    void update(sf::RenderWindow* SFMLWindow);
-    void render(sf::RenderWindow* SFMLWindow);
-    
-    void determineEvent(sf::Event gameEvent, sf::RenderWindow* SFMLWindow); //polls for events and responds
-
+  
     //getters + setters
    
     sf::Event getGameEvent();
     int getWindowHeight();
     int getWindowWidth();
-    std::string getScene();
-    void setWindowHeight(int windowHeight);
-    void setWindowWidth(int windowWidth);
-    void setScene(std::string scene);
+    void play();
+
+
+  
 
 
     

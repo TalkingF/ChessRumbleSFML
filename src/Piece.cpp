@@ -7,7 +7,7 @@ Piece::Piece(bool is_white_, int row_, int col_) {
     col = col_;
 }
 
-bool Piece::getColour() {
+bool Piece::get_Colour() {
     return colour;
 }
 

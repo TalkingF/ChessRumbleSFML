@@ -2,11 +2,11 @@
 
 Square::Square() : piece(nullptr) {}
 
-void Square::setPiece(Piece* p) {
+void Square::set_piece(Piece* p) {
     piece = p;
 }
 
-Piece* Square::getPiece() const {
+Piece* Square::get_piece() const {
     return piece;
 }
 

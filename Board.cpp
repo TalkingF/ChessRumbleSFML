@@ -8,6 +8,7 @@
 #include "Rook.h"
 #include "King.h"
 #include "Board.h"
+#include "BomberPawn.h"
 
 using namespace std;
 
@@ -27,8 +28,8 @@ Board::Board() : squares(SIZE, vector<Square>(SIZE)) {}
 
         // Set up initial pieces
         for (int i = 0; i<8; i++){
-        squares[1][i].set_piece(new Pawn(false, 1, i));  // Black Pawns
-        squares[6][i].set_piece(new Pawn(true, 6, i));  // White Pawns
+        squares[1][i].set_piece(new BomberPawn(false, 1, i));  // Black Pawns
+        squares[6][i].set_piece(new BomberPawn(true, 6, i));  // White Pawns
         }
 
         squares[0][3].set_piece(new Queen(false, 0, 3));  // Black Queen
@@ -72,46 +73,6 @@ void Board::print() const {
         return squares[row][col];
 
     }
-
-   bool Board::isCheck(bool isWhiteTurn) {
-    // Get the positions of the current player's king
-    int currentPlayerKingRow = -1;
-    int currentPlayerKingCol = -1;
-
-    // Find the position of the current player's king
-    for (int row = 0; row < SIZE; ++row) {
-        for (int col = 0; col < SIZE; ++col) {
-            Piece* piece = squares[row][col].get_piece();
-            if (piece != nullptr && piece->get_specific_piece() == 'K' && piece->get_colour() == isWhiteTurn) {
-                currentPlayerKingRow = row;
-                currentPlayerKingCol = col;
-                break; // Exit the loop once the king is found
-            }
-        }
-        if (currentPlayerKingRow != -1 && currentPlayerKingCol != -1) {
-            break; // Exit the outer loop as well
-        }
-    }
-
-    // If the current player's king is not found, return false (not in check)
-    if (currentPlayerKingRow == -1 || currentPlayerKingCol == -1) {
-        return false;
-    }
-
-    // Check if any opponent's piece can capture the current player's king
-    for (int row = 0; row < SIZE; ++row) {
-        for (int col = 0; col < SIZE; ++col) {
-            Piece* piece = squares[row][col].get_piece();
-            if (piece != nullptr && piece->get_colour() != isWhiteTurn) {
-                if (piece->legal_move(currentPlayerKingRow, currentPlayerKingCol, *this)) {
-                    return true; // The current player's king is under attack (in check)
-                }
-            }
-        }
-    }
-
-    return false; // The current player's king is not under attack (not in check)
-}
 
     const vector<vector<Square>>& Board::get_board() const {
     return squares;

@@ -10,12 +10,11 @@ class Square;
 class Board {
 private:
     Square* square;
-    static const int SIZE = 8;
     vector<vector<Square>> squares;
 
 public:
     Board();
-
+    static const int SIZE = 8;
     void initialize();
 
     void print() const;

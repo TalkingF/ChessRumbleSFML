@@ -57,12 +57,6 @@ void Game::play() {
             continue;
         }
 
-        // Check if the move puts the player's own king in check
-        if (board.isCheck(isWhiteTurn)) {
-            cout << "Illegal move. It puts your own king in check. Try again." << endl;
-            continue;
-        }
-
         // Move the piece to the destination square
         endSquareObj.set_piece(startPiece);
         startPiece->set_position(endRow, endCol);

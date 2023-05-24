@@ -26,7 +26,7 @@ public:
 
     void remove_piece(int row, int col);
 
-    bool isCheck(bool isWhiteTurn);
+    bool isKingTaken() const;
 
     int get_size() const; // Public getter for SIZE
 };

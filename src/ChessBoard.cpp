@@ -46,10 +46,7 @@ void ChessBoard::determineEvent(sf::Event gameEvent, sf::RenderWindow* SFMLWindo
         if (this->gameEvent.key.code == sf::Keyboard::Backspace) {
             SFMLWindow->close();
         }
-        else if (this->gameEvent.key.code == sf::Keyboard::Enter) {
-            saveBoard();
-            SFMLWindow->close();
-        }
+
         break;
     case sf::Event::MouseButtonPressed: //left click event
         if (this->gameEvent.mouseButton.button == sf::Mouse::Button::Left) {
@@ -188,11 +185,6 @@ void ChessBoard::InitializePieces() {
         squares.at(i).resize(SIZE);
     }
 
-    if (this->loadState == true) {
-        loadSavedBoard();
-        return;
-    }
-
     if (this->bomberPawns == true) {
         for (int i = 0; i < SIZE; i++) {
         squares[1][i].set_piece(new BomberPawn(false, 1, i));  // Black Pawns
@@ -305,99 +297,4 @@ void ChessBoard::resetMousePosSelection() {
     }
     return false; // The current player's king is not under attack (not in check)
 }
-
-void ChessBoard::saveBoard() {
-    std::fstream fs;
-    fs.open("../src/save.txt", std::ios::trunc | std::ios::out);
-
-    if (this->bomberPawns == true) {
-        fs << 'T';
-    }
-    else {
-        fs << 'F';
-    }
-
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            if (squares.at(j).at(i).get_piece() == nullptr) {
-                fs << '2'; //J signifies no colour
-                fs << 'J';
-            }
-
-            else {
-                fs << squares.at(j).at(i).get_piece()->get_Colour();
-                fs << squares.at(j).at(i).get_piece()->get_specific_piece();
-            }
-       
-        }
-    }
-    
-
-    fs.close();
-    
-}
-
-void ChessBoard::loadSavedBoard() {
-    std::fstream fs;
-    fs.open("../src/save.txt", std::ios::in);
-    char p;
-    bool bomberPawns;
-    char colourChar;
-    bool isWhite;
-    fs >> p;
-    if (p = 'T') {
-        bomberPawns = true;
-    }
-    else {
-        false;
-    } 
-        for (int i = 0; i < SIZE * 2; i++) {
-            for (int j = 0; j < SIZE * 2; j++) {
-                fs >> colourChar;
-                fs >> p;
-                if (colourChar == '2') {
-                    continue;
-                }
-                isWhite = (colourChar == '1') ? true : false;
-
-                switch (p)
-                {
-                case 'P':
-                    if (bomberPawns == true) {
-                      squares[i / 2][j / 2].set_piece(new BomberPawn(isWhite, i, j));
-                    }
-                    else {
-                        squares[i / 2][j / 2].set_piece(new Pawn(isWhite, i, j));
-                    }
-                break;
-                case 'B':
-                    squares[i / 2][j / 2].set_piece(new Bishop(isWhite, i, j));
-                break;
-                case 'N':
-                    squares[i / 2][j / 2].set_piece(new Knight(isWhite, i, j));
-                break;
-                case 'K':
-                    squares[i / 2][j / 2].set_piece(new King(isWhite, i, j));
-                break;
-                case 'Q':
-                    squares[i / 2][j / 2].set_piece(new Queen(isWhite, i, j));
-                break;
-                case 'R':
-                    squares[i / 2][j / 2].set_piece(new Rook(isWhite, i, j));
-                break;
-                default:
-                    break;
-                }
-            }
-        }
-        
-
-}
-
-
-
-    
-
-
-
 

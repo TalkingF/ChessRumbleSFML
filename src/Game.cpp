@@ -109,6 +109,12 @@ void Game::play() {
                     continue;
                 }
             }
+            //checks 
+            if (board->isKingTaken()) {
+                break;
+                
+           
+            }
          
             
 

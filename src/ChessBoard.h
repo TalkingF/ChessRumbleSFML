@@ -59,6 +59,7 @@ class ChessBoard: public Game, public sf::Drawable, public sf::Transformable  {
     std::vector<std::vector<Square>>& get_board();
     void remove_piece(int row, int col);
     bool isCheck(bool isWhiteTurn);
+    bool isKingTaken() const;
 
     
     //getters + setters

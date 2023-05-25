@@ -298,3 +298,27 @@ void ChessBoard::resetMousePosSelection() {
     return false; // The current player's king is not under attack (not in check)
 }
 
+bool ChessBoard::isKingTaken() const {
+    bool isWhiteKingTaken = true;
+    bool isBlackKingTaken = true;
+    for (int row = 0; row < SIZE; ++row) {
+        for (int col = 0; col < SIZE; ++col) {
+            Piece* piece = squares[row][col].get_piece();
+            if (piece != nullptr) {
+                if (piece->get_specific_piece() == 'K') {
+                    if (piece->get_Colour()) {
+                        isWhiteKingTaken = false;  // White king is still on the board
+                    } else {
+                        isBlackKingTaken = false;  // Black king is still on the board
+                    }
+                }
+            }
+        }
+    }
+    // If either king is taken, end the game
+    if (isWhiteKingTaken || isBlackKingTaken) {
+        return true;
+    }
+    return false;
+}
+
